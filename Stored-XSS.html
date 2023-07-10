@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stored XSS</title>
+  <script>
+    function submitMessage() {
+      // Get the name and message from the form
+      var name = document.getElementById("name").value;
+      var message = document.getElementById("message").value;
+
+
+      // Create a new message object
+      var newMessage = { name: name, message: message };
+
+      // Store the message in local storage
+      var messages = JSON.parse(localStorage.getItem("messages")) || [];
+      messages.push(newMessage);
+      localStorage.setItem("messages", JSON.stringify(messages));
+
+      // Clear the form
+      document.getElementById("name").value = "";
+      document.getElementById("message").value = "";
+
+      // Refresh the message list
+      displayMessages();
+    }
+
+    function displayMessages() {
+      // Get the messages from local storage
+      var messages = JSON.parse(localStorage.getItem("messages")) || [];
+
+      // Display the messages in a list
+      var messageList = document.getElementById("messageList");
+      messageList.innerHTML = "";
+      for (var i = 0; i < messages.length; i++) {
+        var li = document.createElement("li");
+        var strong = document.createElement("strong");
+        strong.textContent = messages[i].name + ": ";
+        li.appendChild(strong);
+        li.appendChild(document.createTextNode(messages[i].message));
+        messageList.appendChild(li);
+      }
+    }
+
+    // Initialize the message list on page load
+    window.onload = function() {
+      displayMessages();
+    };
+  </script>
+</head>
+<body>
+  <h1>Guestbook</h1>
+  <form>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name">
+    <br>
+    <label for="message">Message:</label>
+    <textarea id="message" name="message"></textarea>
+    <br>
+    <button type="button" onclick="submitMessage()">Submit</button>
+  </form>
+  <hr>
+  <h2>Messages</h2>
+  <ul id="messageList"></ul>
+</body>
+</html>

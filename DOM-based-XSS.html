@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DOM-based XSS Example</title>
+  <script>
+    function search() {
+      var searchTerm = document.getElementById("searchBox").value;
+      var resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "Search results for '" + searchTerm + "'";
+    }
+  </script>
+</head>
+<body>
+  <h1>Search Products</h1>
+  <input type="text" id="searchBox" placeholder="Enter search term">
+  <button onclick="search()">Search</button>
+  <div id="results"></div>
+</body>
+</html>
